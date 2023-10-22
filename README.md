@@ -1,2 +1,2 @@
 # Walmart_Analysis
-Analysis of Walmart Data using MySQL
+Analysis of Walmart Sales Data using MySQL
