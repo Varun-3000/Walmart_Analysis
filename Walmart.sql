@@ -97,6 +97,15 @@ select city ,branch,sum(total) as total_revenue from sales group by city,branch 
 select product_line,avg(tax_pct) as avg_tax from sales group by product_line order by avg_tax desc;
 /*
 9)Fetch each product line and add a column to those product line showing "Good", "Bad". Good if its greater than average sales
+*/
+select product_line ,
+case
+	when avg(total)>(select avg(total) from sales) then 'Good'
+    else 'Bad'
+end as performance
+from sales 
+group by product_line;
+/*
 10)Which branch sold more products than average product sold?*/
 select branch,sum(quantity) as qty
 	from sales
@@ -146,6 +155,11 @@ select customer_type,count(*) as csm_cnt from sales
 group by customer_type
 order by csm_cnt desc;
 -- 4)Which customer type buys the most?
+select customer_type,count(*) as total_purchases from sales
+group by customer_type
+order by total_purchases desc
+limit 1;
+
 -- 5)What is the gender of most of the customers?
 select gender,count(*) as cnt from sales
 group by gender
@@ -153,8 +167,22 @@ order by cnt desc;
 -- 6)What is the gender distribution per branch?
 select branch,gender,count(*) as cnt from sales
 group by branch,gender
-order by cnt desc;
+order by branch;
 -- 7)Which time of the day do customers give most ratings?
+select time_of_day,avg(rating) as rating from sales
+-- where day_name="Sunday"
+group by time_of_day
+order by rating desc;
 -- 8)Which time of the day do customers give most ratings per branch?
+select time_of_day,branch,avg(rating) as rating from sales
+group by time_of_day,branch
+order by branch; 
 -- 9)Which day fo the week has the best avg ratings?
+select day_name,avg(rating) as rating from sales
+group by day_name
+order by rating desc;
 -- 10)Which day of the week has the best average ratings per branch?
+select branch,day_name,avg(rating) as rating from sales
+where branch in ("A")
+group by branch,day_name
+order by rating desc;
